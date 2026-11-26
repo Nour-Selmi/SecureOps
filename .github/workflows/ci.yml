@@ -42,6 +42,6 @@ jobs:
           -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}
           -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}
                 - name: Télécharger le code
-        uses: actions/checkout@v4
-        with:
+      -  uses: actions/checkout@v4
+         with:
           fetch-depth: 0
