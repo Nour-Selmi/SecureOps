@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculateur d'âge</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f4f8;
+      display: flex;
+      justify-content: center;
+      padding-top: 80px;
+    }
+    .card {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, .15);
+      width: 320px;
+    }
+    h1 { font-size: 22px; text-align: center; margin-top: 0; }
+    label { display: block; margin: 15px 0 5px; font-weight: bold; }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+    button {
+      margin-top: 20px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    #result { background: #f9fafb; font-weight: bold; }
+    #result.error { color: #b91c1c; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Calculateur d'âge</h1>
+
+    <label for="birthDate">Date de naissance</label>
+    <input type="date" id="birthDate">
+
+    <button id="calc">Calculer</button>
+
+    <label for="result">Résultat</label>
+    <input type="text" id="result" readonly placeholder="Votre âge s'affichera ici">
+  </div>
+
+  <script>
+    const dateInput = document.getElementById("birthDate");
+    const result = document.getElementById("result");
+
+    // Empêche de choisir une date dans le futur
+    dateInput.max = new Date().toISOString().split("T")[0];
+
+    document.getElementById("calc").addEventListener("click", async () => {
+      result.classList.remove("error");
+
+      if (!dateInput.value) {
+        result.classList.add("error");
+        result.value = "Veuillez choisir une date";
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "/api/age?birthDate=" + encodeURIComponent(dateInput.value));
+        const data = await response.json();
+
+        if (response.ok) {
+          result.value = data.age + " ans";
+        } else {
+          result.classList.add("error");
+          result.value = data.error || "Date invalide";
+        }
+      } catch (e) {
+        result.classList.add("error");
+        result.value = "Serveur injoignable";
+      }
+    });
+  </script>
+</body>
+</html>
