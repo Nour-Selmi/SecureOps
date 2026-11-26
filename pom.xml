@@ -17,6 +17,7 @@
 
   <properties>
     <java.version>21</java.version>
+    <tomcat.version>VERSION-INDIQUEE-DANS-FIXED-VERSION</tomcat.version>
   </properties>
 
   <dependencies>
