@@ -69,6 +69,7 @@ jobs:
             severity: HIGH,CRITICAL
             ignore-unfixed: true
             exit-code: '1'
+            trivyignores: .trivyignore
 
         - name: Connexion à Docker Hub
           if: github.ref == 'refs/heads/main' && github.event_name == 'push'
